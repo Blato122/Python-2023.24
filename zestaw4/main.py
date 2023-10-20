@@ -70,12 +70,38 @@ def flatten(sequence):
             result.append(item)
     return result
 
+def make_grid(height, width):
+    vertical = "   |"
+    horizontal = "---+"
+    full_h = "+" + horizontal * width + "\n"
+    full_v = "|" + vertical * width + "\n"
+    return height * (full_h + full_v) + full_h
+
+def make_ruler(length):
+    section = "....|"
+    section_len = len(section)
+    full = "|" + length * section
+    numbers = "0" + "".join((" " * (section_len - len(str_x := str(x)))) + str_x
+                      for x in range(1, length + 1))
+    return full + "\n" + numbers
+
 if __name__ == "__main__":
-    print(f"Zadanie 4.2 - ") # zrobione w zestawie 3
+    # Zadanie 4.2
+    print(f"Zadanie 4.2 - linijka i siatka") # zrobione w zestawie 3
+    height, width = 10, 20
+    print(f"siatka: \n{make_grid(height, width)}")    
+    length = 16
+    print(f"miarka: \n{make_ruler(length)}")
+
+    # Zadanie 4.3
     n = 6
     print(f"Zadanie 4.3 - silnia iteracyjna: {factorial(n)}")
+
+    # Zadanie 4.4
     print(f"Zadanie 4.4 - fibonacci: ", end="")
     print(", ".join(str(fibonacci(m)) for m in range(1, 11)))
+
+    # Zadanie 4.5
     L1 = [1, 2, 3, 4, 5, 6, 7]
     L2 = L1[:] # L1 = L2 = [1, 2, 3, ...] nie dziala!
     L3 = L1.copy()
@@ -85,6 +111,10 @@ if __name__ == "__main__":
     reverse_recursive(L2, 1, 4)
     print(f"Zadanie 4.5 - odwracanie listy rekurencyjnie: {L2}")
     # print(f"Zadanie 4.5 - odwracanie listy sposob dodatkowy: {reverse(L3, 1, 4)}")
+
+    # Zadanie 4.6
     seq = [1,(2,3),[],[4,(5,6,7)],8,[9]]
     print(f"Zadanie 4.6 - suma liczb w zagniezdzonych sekwencjach: {sum_seq(seq)}")
+
+    # Zadanie 4.7
     print(f"Zadanie 4.7 - splaszczona lista elementow zagniezdzonych sekwencji: {flatten(seq)}")

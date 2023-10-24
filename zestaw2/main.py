@@ -20,6 +20,7 @@ def ex2_10(line):
 
 def ex2_11(word):
     return "_".join(word)
+    # print(*word, sep="_") - alternatywne rozwiazanie
 
 def ex2_12(line, last_chars=False):
     return "".join(word[len(word)-1 if last_chars else 0] for word in line.split())
@@ -33,7 +34,8 @@ def ex2_14(line):
     #     if (len(word) > len(max)):
     #         max = word
     # return max
-    return max(line.split())
+    return max(line.split(), key=len)
+    # return sum(1 for char in line if not char.isspace()) - alternatywne rozwiazanie
 
 def ex2_15(ints):
     # return "".join(map(str, ints))
@@ -51,6 +53,7 @@ def ex2_17(line, sort_option):
 
 def ex2_18(x):
     return str(x).count("0")
+    # return sum(x == "0" for x in str(number)) - alt. rozw.
 
 def ex2_19(ints):
     return " ".join(str(x).zfill(3) for x in ints)

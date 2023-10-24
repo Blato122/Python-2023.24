@@ -52,6 +52,16 @@ def roman2int_v2(roman):
     return sum(current if current >= next else -current for
                current, next in zip(values, values[1:])) + values[-1]
 
+# pozostale sposoby na utworzenie slownika:
+
+#    sposob 2.
+#    keys = ["I", "V", "X", "L", "C", "D", "M"]
+#    values = [1, 5, 10, 50, 100, 500, 1000]
+#    D = dict(zip(keys, values))
+
+#    sposob 3.
+#    D = {k: v for (k, v) in zip(keys, values)}
+
 def ex3_9(seq_list):
     return list(sum(seq) for seq in seq_list)
 
@@ -76,22 +86,18 @@ def ex3_5(length):
                       for x in range(1, length + 1))
     return full + "\n" + numbers
 
-def is_float(string):
-    try: 
-        float(string)
-        return True
-    except ValueError:
-        return False
-
 def ex3_4():
     while True:
-        x = input("Podaj liczbe: ")
-        if is_float(x):
-            print(f"Trzecia potega: {float(x)**3}")
-        elif x == "stop":
+        reply = input("Podaj liczbe lub wpisz \"stop\": ")
+        if reply == "stop":
             break
+
+        try:
+            x = float(reply)
+        except ValueError:
+            print(f"{reply} nie jest liczba!")
         else:
-            print("Niepoprawne wejscie - podaj liczbe")
+            print(f"Trzecia potega: {float(x)**3}")
 
 def ex3_3():
     list = []

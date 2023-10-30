@@ -44,4 +44,6 @@ class TestPoint(unittest.TestCase):
         pass
 
 if __name__ == "__main__":
+    print(p.Point(1, 2))
+    print([p.Point(1, 2), p.Point(3, 4)])
     unittest.main()  # wszystkie testy

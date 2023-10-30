@@ -13,8 +13,8 @@ class Point:
         return "({}, {})".format(self.x, self.y)
     
     # zwraca string "Point(x, y)"
-    def __repr__(self):        
-        return "Point({}, {})".format(self.x, self.y)
+    def __repr__(self):
+        return "{}({}, {})".format(self.__class__.__name__, self.x, self.y)
     
     # obsługa point1 == point2
     def __eq__(self, other):   

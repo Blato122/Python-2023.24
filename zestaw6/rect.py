@@ -1,6 +1,7 @@
 from point import Point
+from copy import deepcopy
 
-class Rectangle:
+class Rect:
     """Klasa reprezentująca prostokąt na płaszczyźnie."""
 
     def __init__(self, x1, y1, x2, y2):
@@ -10,10 +11,11 @@ class Rectangle:
 
     # "[(x1, y1), (x2, y2)]"
     def __str__(self):
-        return "({}, {})".format(self.pt1, self.pt2) # ?
+        return "[{}, {}]".format(self.pt1, self.pt2)
 
-    def __repr__(self):         # "Rectangle(x1, y1, x2, y2)"
-        return "Rectangle({}, {})".format(repr(self.pt1), repr(self.pt2))
+    # "Rectangle(x1, y1, x2, y2)"
+    def __repr__(self):
+        return "{}({}, {}, {}, {})".format(self.__class__.__name__, self.pt1.x, self.pt1.y, self.pt2.x, self.pt2.y)
 
     # obsługa rect1 == rect2
     def __eq__(self, other):
@@ -23,8 +25,19 @@ class Rectangle:
     def __ne__(self, other):
         return not self == other
 
-    def center(self): pass          # zwraca środek prostokąta
+    # zwraca środek prostokąta
+    def center(self):
+        return Point((self.pt1.x + self.pt2.x) / 2, (self.pt1.y + self.pt2.y) / 2)
 
-    def area(self): pass            # pole powierzchni
+    # pole powierzchni
+    def area(self):
+        return abs(self.pt2.x - self.pt1.x) * abs(self.pt2.y - self.pt1.y)
 
-    def move(self, x, y): pass      # przesunięcie o (x, y)
+    # przesunięcie o (x, y)
+    def move(self, x, y):
+        r = deepcopy(self)
+        r.pt1.x += x
+        r.pt2.x += x
+        r.pt1.y += y
+        r.pt2.y += y
+        return r

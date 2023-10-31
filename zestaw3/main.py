@@ -89,7 +89,7 @@ def ex3_5(length):
 def ex3_4():
     while True:
         reply = input("Podaj liczbe lub wpisz \"stop\": ")
-        if reply == "stop":
+        if reply.lower() == "stop":
             break
 
         try:
@@ -100,6 +100,14 @@ def ex3_4():
             print(f"Trzecia potega: {float(x)**3}")
 
 def ex3_3():
+    # lepiej (bez tworzenia listy w pamieci)
+    # x = 0
+    # while x < 31:
+    #     if x % 3: print(x)
+    #     x += 1
+
+    # krotko: print [x for x in range(31) if x % 3]
+
     list = []
     for x in range(31):
         if x % 3 == 0:

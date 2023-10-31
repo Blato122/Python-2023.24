@@ -171,7 +171,7 @@ if __name__ == "__main__":
 
     # L = [3, 5, 4] ; L = L.sort()
     # metoda sort() zwraca None, wiec w ten sposob pozbedziemy sie zawartosci listy L,
-    # zmaiast ja posortowac
+    # zamiast ja posortowac
 
     # x, y = 1, 2, 3
     # zbyt wiele wartosci (3) do przypisania do 2 zmiennych
@@ -189,4 +189,4 @@ if __name__ == "__main__":
 
     # L = list(map(pow, range(8)))
     # brakuje kolejnego argumentu funkcji map(), bedacego drugim argumentem dla pow()
-    # trzeba tam podac potegi, do ktorych chcemy podniesz liczby z range(8)
+    # trzeba tam podac potegi, do ktorych chcemy podniesc liczby z range(8)

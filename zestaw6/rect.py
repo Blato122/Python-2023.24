@@ -1,13 +1,13 @@
-from point import Point
-from copy import deepcopy
+import point
+import copy
 
 class Rect:
     """Klasa reprezentująca prostokąt na płaszczyźnie."""
 
     def __init__(self, x1, y1, x2, y2):
         """lewy dolny i prawy gorny wierzcholek"""
-        self.pt1 = Point(x1, y1)
-        self.pt2 = Point(x2, y2)
+        self.pt1 = point.Point(x1, y1)
+        self.pt2 = point.Point(x2, y2)
 
     # "[(x1, y1), (x2, y2)]"
     def __str__(self):
@@ -27,7 +27,7 @@ class Rect:
 
     # zwraca środek prostokąta
     def center(self):
-        return Point((self.pt1.x + self.pt2.x) / 2, (self.pt1.y + self.pt2.y) / 2)
+        return point.Point((self.pt1.x + self.pt2.x) / 2, (self.pt1.y + self.pt2.y) / 2)
 
     # pole powierzchni
     def area(self):
@@ -35,7 +35,7 @@ class Rect:
 
     # przesunięcie o (x, y)
     def move(self, x, y):
-        r = deepcopy(self)
+        r = copy.deepcopy(self)
         r.pt1.x += x
         r.pt2.x += x
         r.pt1.y += y

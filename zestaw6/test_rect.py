@@ -1,6 +1,7 @@
 # Kod testujący moduł.
 
 import rect as r
+from rect import point as p
 import unittest
 
 class TestRect(unittest.TestCase):
@@ -20,12 +21,16 @@ class TestRect(unittest.TestCase):
         self.assertTrue(r.Rect(1, 2, 3, 4) != r.Rect(5, 6, 7, 8))
 
     def test_center_rect(self):
-        self.assertEqual(r.Rect(1, 2, 3, 4).center(), r.Point(2, 3))
+        self.assertEqual(r.Rect(1, 2, 3, 4).center(), p.Point(2, 3))
 
     def test_area_rect(self):
         self.assertEqual(r.Rect(1, 2, 3, 4).area(), 2 * 2)
         self.assertEqual(r.Rect(-2, -2, 2, 2).area(), 4 * 4)
         self.assertEqual(r.Rect(2, 2, -2, -2).area(), 4 * 4)
+        self.assertEqual(r.Rect(-5, 5, -4, 4).area(), 1)
+        self.assertEqual(r.Rect(5, -5, 4, -4).area(), 1)
+        self.assertEqual(r.Rect(-5, 5, 4, -4).area(), 9 * 9)
+        self.assertEqual(r.Rect(5, -5, -4, 4).area(), 9 * 9)
 
     def test_move_rect(self):
         self.assertEqual(r.Rect(0, 0, 1, 1).move(2, 4), r.Rect(2, 4, 3, 5))

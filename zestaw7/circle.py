@@ -2,9 +2,13 @@ import os
 import sys
 import math
 import copy
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'zestaw6')) # :(
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "zestaw6")) # :(
 import point
 
+# __file__ attribute is used to get the name of the file being executed. 
+# Then os.path.dirname() is used to get the path of the parent directory. 
+# We then use os.path.join to move up one directly (i.e., ..) and 
+# into the 'zestaw6' sibling directory. Finally, we append this path to sys.path.
 
 class Circle:
     """Klasa reprezentująca okręgi na płaszczyźnie."""

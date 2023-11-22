@@ -31,9 +31,29 @@ class TestCircle(unittest.TestCase):
         self.assertEqual(Circle(1, 1, 5).move(2, 4), Circle(3, 5, 5))
 
     def test_cover_circle(self):
-        result_r = (2.5 + math.sqrt(5)) / 2
-        result = Circle(2, 1.5, result_r)
-        self.assertEqual(Circle(1, 1, 1).cover(Circle(3, 2, 1.5)), result)
+        r = (2.5 + math.sqrt(5)) / 2
+        x = 2.223606798
+        y = 1.611803399
+        result = Circle(x, y, r)
+        self.assertEqual(round( Circle(1, 1, 1).cover(Circle(3, 2, 1.5)) ), round(result))
+
+        r = (2.5 + math.sqrt(5)) / 2
+        x = 2.223606798
+        y = 1.611803399
+        result = Circle(x, y, r)
+        self.assertEqual(round( Circle(3, 2, 1.5).cover(Circle(1, 1, 1)) ), round(result))
+
+        r = 2
+        x = 0
+        y = 0
+        result = Circle(x, y, r)
+        self.assertEqual(round( Circle(0, 0, 2).cover(Circle(1, 1, 0)) ), round(result))
+
+        r = 2
+        x = 0
+        y = 0
+        result = Circle(x, y, r)
+        self.assertEqual(round( Circle(1, 1, 0).cover(Circle(0, 0, 2)) ), round(result))
 
     def tearDown(self): 
         pass

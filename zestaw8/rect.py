@@ -26,52 +26,42 @@ class Rect:
 
     @property
     def bottom(self):   # getting an attribute value
-        """I'm the 'bottom' property."""
         return self.__bottom
         
     @property
     def top(self):   # getting an attribute value
-        """I'm the 'top' property."""
         return self.__top
 
     @property
     def left(self):   # getting an attribute value
-        """I'm the 'left' property."""
         return self.__left
 
     @property
     def right(self):   # getting an attribute value
-        """I'm the 'right' property."""
         return self.__right
 
     @property
     def width(self):   # getting an attribute value
-        """I'm the 'width' property."""
         return self.__width
 
     @property
     def topleft(self):   # getting an attribute value
-        """I'm the 'topleft' property."""
         return self.__topleft
 
     @property
     def height(self):   # getting an attribute value
-        """I'm the 'height' property."""
         return self.__height
 
     @property
     def bottomleft(self):   # getting an attribute value
-        """I'm the 'bottomleft' property."""
         return self.__bottomleft
 
     @property
     def topright(self):   # getting an attribute value
-        """I'm the 'topright' property."""
         return self.__topright
 
     @property
     def bottomright(self):   # getting an attribute value
-        """I'm the 'bottomright' property."""
         return self.__bottomright
 
     @classmethod

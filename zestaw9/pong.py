@@ -7,11 +7,20 @@ import pygame
 import random
 import math
 
-# ----------------------- COLORS -----------------------
 BLACK = pygame.Color(0, 0, 0)
 WHITE = pygame.Color(255, 255, 255)
 GREEN = pygame.Color(0, 255, 0)
 RED = pygame.Color(255, 0, 0)
+
+size = screen_width, screen_height = (1000, 800)
+paddle_width = screen_width / 70
+paddle_height = screen_height / 5
+paddle_speed = 15
+
+ball_diameter = screen_width / 50
+paddle_offset = ball_diameter * 1.5
+
+screen = pygame.display.set_mode(size)
 
 # ----------------------- GAME -----------------------
 class Pong:
@@ -43,12 +52,11 @@ class Pong:
 
             # DRAWING
             if pygame.sprite.spritecollideany(self.ball, self.paddles):
-                ball.change_direction()
+                self.ball.change_direction()
 
             keys = pygame.key.get_pressed()
             self.sprites.update(keys)
 
-            print(self.ball.is_scored)
             if self.ball.is_scored:
                 self.update_score(self.score_l)
 
@@ -102,17 +110,18 @@ class Ball(pygame.sprite.Sprite):
         self.image.fill(color) # tylko kolor
         self.rect = self.image.get_rect()
         self.init_coords()
-        self.is_scored = False
+        self.base_speed = [5, 5]
         self.speed = self.rand_spd()
+        self.is_scored = False
 
     def rand_spd(self):
         # so as to avoid movement too vertical or too horizontal
         angle_beg = random.choice([30, 120, 210, 300])
         angle_end = angle_beg + 30
         angle = math.radians(random.uniform(angle_beg, angle_end))
-        x_speed = ball_init_speed[0] * math.sin(angle)
-        y_speed = ball_init_speed[1] * math.cos(angle)
-        return [x_speed, y_speed]
+        speedx = self.base_speed[0] * math.sin(angle)
+        speedy = self.base_speed[1] * math.cos(angle)
+        return [speedx, speedy]
     
     def init_coords(self):
         self.rect.y = (screen_height - ball_diameter) / 2
@@ -139,22 +148,9 @@ class Ball(pygame.sprite.Sprite):
         return self.is_scored
 
 def main():
-    # ----------------------- INIT -----------------------
     pygame.init()
     pygame.font.init()
-    size = screen_width, screen_height = (1000, 800)
-    screen = pygame.display.set_mode(size)
     pygame.display.set_caption('Pong')
-
-    # ----------------------- VARIABLES -----------------------
-    paddle_width = screen_width / 70
-    paddle_height = screen_height / 5
-    paddle_speed = 15
-
-    ball_diameter = screen_width / 50
-    paddle_offset = ball_diameter * 1.5
-
-    ball_init_speed = [5, 5]
 
     fps = 120
     clock = pygame.time.Clock()

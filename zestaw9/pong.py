@@ -58,7 +58,13 @@ class Pong:
             self.sprites.update(keys)
 
             if self.ball.is_scored:
-                self.update_score(self.score_l)
+                self.score_l += 1
+                self.ball.is_scored = False # wait to click! 
+                if keys[pygame.K_SPACE]:
+                    self.ball.init_coords()
+                    self.ball.speed = self.ball.rand_spd()
+                if self.score_l == self.MAX_SCORE or self.score_r == self.MAX_SCORE:
+                    self.end_menu()
 
             screen.fill(BLACK)
             self.sprites.draw(screen)
@@ -67,11 +73,6 @@ class Pong:
             score_text = self.font.render(f'left score: {self.score_l} right score: {self.score_r}', True, (255, 255, 255))
             screen.blit(score_text, (10, 10))
             pygame.display.flip() # przerysowanie całego okna z bufora na ekran
-
-    def update_score(self, score):
-        score += 1
-        if score == self.MAX_SCORE:
-            self.end_menu()
 
     def start_menu(self):
         pass
@@ -123,6 +124,10 @@ class Ball(pygame.sprite.Sprite):
         speedy = self.base_speed[1] * math.cos(angle)
         return [speedx, speedy]
     
+    def reset(self):
+        self.init_coords()
+        self.speed = self.rand_spd()
+
     def init_coords(self):
         self.rect.y = (screen_height - ball_diameter) / 2
         self.rect.x = (screen_width - ball_diameter) / 2
@@ -138,15 +143,7 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.right < paddle_offset or self.rect.left > screen_width - paddle_offset:
             self.speed = [0, 0]
             self.is_scored = True
-        
-        if self.is_scored:
-            if keys[pygame.K_SPACE]:
-                self.is_scored = False
-                self.init_coords()
-                self.speed = self.rand_spd()
             
-        return self.is_scored
-
 def main():
     pygame.init()
     pygame.font.init()

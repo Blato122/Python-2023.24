@@ -13,22 +13,6 @@ WHITE = pygame.Color(255, 255, 255)
 GREEN = pygame.Color(0, 255, 0)
 RED = pygame.Color(255, 0, 0)
 
-# ----------------------- INIT -----------------------
-pygame.init()
-size = screen_width, screen_height = (1000, 800)
-screen = pygame.display.set_mode(size)
-pygame.display.set_caption('Pong')
-
-# ----------------------- VARIABLES -----------------------
-paddle_width = screen_width / 70
-paddle_height = screen_height / 5
-paddle_speed = 15
-
-ball_diameter = screen_width / 50
-paddle_offset = ball_diameter * 1.5
-
-ball_init_speed = [8, 8]
-
 # ----------------------- GAME -----------------------
 class Pong:
     def __init__(self, ball, paddle_l, paddle_r=None):
@@ -47,32 +31,44 @@ class Pong:
         self.over = False
         self.point_scored = False
 
-    def run(self):
-        # HANDLE EVENTS
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.over = True
+        self.font = pygame.font.Font(None, 36)
 
-        # DRAWING
-        if pygame.sprite.spritecollideany(self.ball, self.paddles):
-            ball.change_direction()
+    def run(self, clock, fps):
+        while not self.over:
+            # HANDLE EVENTS
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.over = True
+                    # ??
 
-        keys = pygame.key.get_pressed()
-        self.sprites.update(keys)
+            # DRAWING
+            if pygame.sprite.spritecollideany(self.ball, self.paddles):
+                ball.change_direction()
 
+            keys = pygame.key.get_pressed()
+            self.sprites.update(keys)
 
-        screen.fill(BLACK)
-        self.sprites.draw(screen)
+            print(self.ball.is_scored)
+            if self.ball.is_scored:
+                self.update_score(self.score_l)
 
-        clock.tick(2*fps)
-        pygame.display.flip() # przerysowanie całego okna z bufora na ekran
+            screen.fill(BLACK)
+            self.sprites.draw(screen)
+
+            clock.tick(fps)
+            score_text = self.font.render(f'left score: {self.score_l} right score: {self.score_r}', True, (255, 255, 255))
+            screen.blit(score_text, (10, 10))
+            pygame.display.flip() # przerysowanie całego okna z bufora na ekran
 
     def update_score(self, score):
         score += 1
         if score == self.MAX_SCORE:
-            self.end_game()
+            self.end_menu()
 
-    def end_game(self):
+    def start_menu(self):
+        pass
+
+    def end_menu(self):
         pass
 
 # ----------------------- PADDLE -----------------------
@@ -142,15 +138,34 @@ class Ball(pygame.sprite.Sprite):
             
         return self.is_scored
 
-# ----------------------- SPRITES -----------------------
-ball = Ball(RED, ball_diameter)
-paddle1 = Paddle(GREEN, paddle_width, paddle_height, left=True)
-paddle2 = Paddle(GREEN, paddle_width, paddle_height)
+def main():
+    # ----------------------- INIT -----------------------
+    pygame.init()
+    pygame.font.init()
+    size = screen_width, screen_height = (1000, 800)
+    screen = pygame.display.set_mode(size)
+    pygame.display.set_caption('Pong')
 
-# ----------------------- GAME -----------------------
-if __name__ == "__main__":
-    fps = 60
+    # ----------------------- VARIABLES -----------------------
+    paddle_width = screen_width / 70
+    paddle_height = screen_height / 5
+    paddle_speed = 15
+
+    ball_diameter = screen_width / 50
+    paddle_offset = ball_diameter * 1.5
+
+    ball_init_speed = [5, 5]
+
+    fps = 120
     clock = pygame.time.Clock()
+
+    # ----------------------- RUN -----------------------
+    ball = Ball(RED, ball_diameter)
+    paddle1 = Paddle(GREEN, paddle_width, paddle_height, left=True)
+    paddle2 = Paddle(GREEN, paddle_width, paddle_height)
     game = Pong(ball, paddle1, paddle2)
-    game.run()
+    game.run(clock, fps)
     pygame.quit()
+
+if __name__ == "__main__":
+    main()

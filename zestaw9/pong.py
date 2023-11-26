@@ -16,7 +16,9 @@ RED = pygame.Color(255, 0, 0)
 size = screen_width, screen_height = (1200, 900)
 paddle_width = screen_width / 70
 paddle_height = screen_height / 5
-paddle_speed = 15
+
+paddle_speed = 900
+ball_speed = [600, 600]
 
 ball_diameter = screen_width / 50
 paddle_offset = ball_diameter * 1.5
@@ -51,12 +53,18 @@ class Pong:
         self.score_l = self.score_r = 0
         self.MAX_SCORE = 2 #11
         self.over = False
+        self.finished = False
 
         self.font = pygame.font.Font(None, 72)
 
     def run(self, fps):
         clock = pygame.time.Clock()
+        # choose players here?
+        self.start_menu() # does nothing
         while not self.over:
+            timedelta = clock.tick(fps)
+            c = timedelta / 1000.0
+            
             # HANDLE EVENTS
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -68,8 +76,9 @@ class Pong:
                 self.ball.change_direction()
 
             keys = pygame.key.get_pressed()
-            self.sprites.update(keys, self.ball.rect.centery)
+            self.sprites.update(keys, self.ball.rect.centery, c)
 
+            print (self.ball.state)
             if (s := self.ball.state) == IsScored.LEFT:
                 self.score_r += 1 
                 self.ball.state = IsScored.WAITING
@@ -81,23 +90,34 @@ class Pong:
                 if keys[pygame.K_SPACE]:
                     for sprite in self.sprites:
                         sprite.reset()
-                if self.score_l == self.MAX_SCORE or self.score_r == self.MAX_SCORE:
-                    self.end_menu()
 
             screen.fill(BLACK)
             self.sprites.draw(screen)
 
+            if self.score_l == self.MAX_SCORE or self.score_r == self.MAX_SCORE:
+                self.end_menu()
+                self.finished = True
+
+            if self.finished:
+                if keys[pygame.K_SPACE]:
+                    for sprite in self.sprites:
+                        sprite.reset()
+                    self.score_l = self.score_r = 0
+                    self.finished = False
+                if keys[pygame.K_RETURN]: # enter
+                    self.over = True
+
             score_text = self.font.render(f"{self.score_l} - {self.score_r}", True, (255, 255, 255))
             screen.blit(score_text, ((screen_width - score_text.get_width()) / 2, screen_height / 50))
 
-            clock.tick(fps)
             pygame.display.flip() # przerysowanie całego okna z bufora na ekran
 
     def start_menu(self):
         pass
 
     def end_menu(self):
-        pass
+        end_text = self.font.render(f"Player 1 won" if self.score_l == self.MAX_SCORE else "Player 2 won", True, (255, 255, 255))
+        screen.blit(end_text, ((screen_width - end_text.get_width()) / 2, screen_height / 2))   
 
 # ----------------------- PADDLE -----------------------
 class Paddle(pygame.sprite.Sprite):
@@ -113,22 +133,22 @@ class Paddle(pygame.sprite.Sprite):
         self.rect.centery = screen_height / 2
         self.rect.centerx = paddle_offset if self.player == Player.LEFT else screen_width - paddle_offset
 
-    def update(self, keys, ball_y):
+    def update(self, keys, ball_y, td):
         if self.player == Player.RIGHT:
             if keys[pygame.K_DOWN] and self.rect.bottom <= screen_height:
-                self.rect.y += paddle_speed
+                self.rect.y += td * paddle_speed
             if keys[pygame.K_UP] and self.rect.top >= 0:
-                self.rect.y -= paddle_speed
+                self.rect.y -= td * paddle_speed
         elif self.player == Player.LEFT:
             if keys[pygame.K_s] and self.rect.bottom <= screen_height:
-                self.rect.y += paddle_speed
+                self.rect.y += td * paddle_speed
             if keys[pygame.K_w] and self.rect.top >= 0:
-                self.rect.y -= paddle_speed
+                self.rect.y -= td * paddle_speed
         else: # AI
             if self.rect.centery < ball_y:
-                self.rect.y += paddle_speed #* random.uniform(0.15, 0.25)
+                self.rect.y += td * paddle_speed #* random.uniform(0.15, 0.25)
             else:
-                self.rect.y -= paddle_speed #* random.uniform(0.15, 0.25)
+                self.rect.y -= td * paddle_speed #* random.uniform(0.15, 0.25)
 
 # ----------------------- BALL -----------------------
 class Ball(pygame.sprite.Sprite):
@@ -137,7 +157,6 @@ class Ball(pygame.sprite.Sprite):
         self.image = pygame.Surface([diameter, diameter])
         self.image.fill(color) # tylko kolor
         self.rect = self.image.get_rect()
-        self.base_speed = [8, 8]
         self.reset()
 
     def rand_spd(self):
@@ -145,8 +164,8 @@ class Ball(pygame.sprite.Sprite):
         angle_beg = random.choice([30, 120, 210, 300])
         angle_end = angle_beg + 30
         angle = math.radians(random.uniform(angle_beg, angle_end))
-        speedx = self.base_speed[0] * math.sin(angle)
-        speedy = self.base_speed[1] * math.cos(angle)
+        speedx = ball_speed[0] * math.sin(angle)
+        speedy = ball_speed[1] * math.cos(angle)
         return [speedx, speedy]
     
     def reset(self):
@@ -161,8 +180,8 @@ class Ball(pygame.sprite.Sprite):
     def change_direction(self):
         self.speed[0] *= -1
 
-    def update(self, keys, ball_y):
-        self.rect.move_ip(self.speed)
+    def update(self, keys, ball_y, td):
+        self.rect.move_ip(self.speed[0] * td, self.speed[1] * td)
 
         if self.rect.top <= 0 or self.rect.bottom >= screen_height:
             self.speed[1] *= -1
@@ -178,7 +197,7 @@ def main():
     pygame.font.init()
     pygame.display.set_caption('Pong')
     game = Pong(vsAI=False)
-    game.run(fps=120)
+    game.run(fps=60)
     pygame.quit()
 
 if __name__ == "__main__":

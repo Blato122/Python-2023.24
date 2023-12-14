@@ -63,7 +63,7 @@ class Pong:
         self.start_menu() # does nothing
         while not self.over:
             timedelta = clock.tick(fps)
-            c = timedelta / 1000.0
+            c = timedelta / 1000.0 # ms to s
             
             # HANDLE EVENTS
             for event in pygame.event.get():

@@ -12,14 +12,18 @@ class Stack:
 
     def push(self, data):
         if self.is_full():
-            raise IndexError
+            raise IndexError("trying to push to a full stack")
         self.storage[self.size] = data
         self.size += 1
 
     def pop(self):
         if self.is_empty():
-            raise IndexError
+            raise IndexError("trying to pop from an empty stack")
         self.size -= 1
         data = self.storage[self.size]
         self.storage[self.size] = None
         return data
+
+if __name__ == "__main__":
+    s = Stack()
+    s.pop()

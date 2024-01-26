@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 import pickle
+import random
 
 CELL_W = 20
 WALL_W = 5
@@ -27,6 +28,10 @@ class Maze:
 
             maze_img[min_x : max_x + CELL_W, min_y : max_y + CELL_W] = 255
 
+        start = random.randint(0, self.MST.cols - 1)
+        finish = random.randint(0, self.MST.cols - 1)
+        maze_img[0 : WALL_W, start * (WALL_W + CELL_W) : (start + 1) * (WALL_W + CELL_W)] = 255
+        maze_img[-WALL_W:, finish * (WALL_W + CELL_W) : (finish + 1) * (WALL_W + CELL_W)] = 255
         self.maze_img = maze_img
 
     def show(self):

@@ -2,7 +2,7 @@ from graph import Graph
 from maze import Maze
 import pickle
 
-ROWS, COLS = 4, 4
+ROWS, COLS = 12, 12
 
 load = False
 

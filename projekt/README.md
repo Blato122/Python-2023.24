@@ -20,9 +20,11 @@ Aby wiedzieć, czy daną ścianę narysować, sprawdzamy, czy komórki, które m
 krawędź minimalnego drzewa rozpinającego. Jeśli tak - ściany nie ma, jeśli nie - ściana jest. Tak
 właśnie powstaje labirynt.
 
-### Opis poszczególnych klas i metod:
+### Opis poszczególnych plików, klas i metod:
 * disjoint_sets.py - **DisjointSets** - klasa reprezentująca strukturę zbiorów rozłącznych. Przechowuje ona
-  podział danego zbioru na mniejsze, rozłączne zbiory. Zawiera dwie funkcje: join() łączy dwa zbiory w jeden,
-  a find() zwraca zbiór, do którego należy wybrany element.
-* disjoint_sets.py - **Node** - klasa pomocnicza dla klasy DisjointSets
-* graph.py - **Graph** - klasa reprezentująca graf. Zawiera wymiary grafu (liczbę kolumn i wierszy)
+podział danego zbioru na mniejsze, rozłączne zbiory. Zawiera dwie funkcje: join() łączy dwa zbiory w jeden,
+a find() zwraca zbiór, do którego należy wybrany element.
+* disjoint_sets.py - **Node** - klasa pomocnicza dla klasy DisjointSets.
+* graph.py - **Graph** - klasa reprezentująca graf. Zawiera wymiary grafu (liczbę kolumn i wierszy - cols i rows), jego rozmiar (liczbę wierzchołków - size) oraz listę krawędzi - G. Funkcja generate_edges() dodaje do grafu pionowe i poziome połączenia między wierzchołkami (za pomocą pomocniczej funkcji add_edge()), tak, aby powstała prostokątna siatka. Funkcja kruskal() zwraca drzewo, z którego następnie, w klasie Maze, może zostać utworzony labirynt.
+* maze.py - **Maze** - klasa reprezentująca labirynt. Konstruktor przyjmuje jedynie drzewo utworzone przez funkcję kruskal(). Funkcja draw() tworzy graficzną reprezentację labiryntu. Na czarnym tle rysowane są białe komórki oraz przerwy w ścianach. W wyniku powstaje labirynt, w którym są czarne ściany i biała powierzchnia do chodzenia. WALL_W określa szerokość ściany, a CELL_W szerokość komórki. Dodatkowo, losowo jest wybierane wejście i wyjście z labiryntu, tak, aby dało się go przejść od początku do końca. Labirynt można wyświetlić na ekranie za pomocą funkcji show() - grafika pojawi się w nowym okienku, jednak można ją zapisać również do pliku, podając w konsoli nazwę pliku (wraz z rozszerzeniem) pod jaką chcemy go zapisać. Dodatkowo, binarna postać drzewa jest zapisywana do pliku "save.p" za pomocą biblioteki pickle. Umożliwia ona ponowne utworzenie tego samego labiryntu, po wybraniu odpowiedniej opcji w pliku main.py.
+* main.py - tworzenie i rysowanie labiryntu o zadanej wielkości (ROWS, COLS). W przypadku wybrania opcji load = True, ładowany jest poprzedni labirynt z pliku "save.p". W przeciwnym wypadku, generowany jest nowy, losowy labirynt.
